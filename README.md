@@ -18,6 +18,27 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
+## Deploy ke Cloudflare Pages
+
+Aplikasi ini menggunakan Next.js static export karena seluruh fiturnya berjalan di browser. Hasil build berada di folder `out`, jadi tidak perlu Worker adapter atau konfigurasi `wrangler.jsonc`.
+
+### Uji build lokal
+
+Jalankan `npm run build`. Pastikan proses berhasil dan folder `out` terbentuk sebelum menghubungkan repository ke Cloudflare.
+
+### Hubungkan repository GitHub
+
+1. Push project ini ke repository GitHub.
+2. Di dashboard Cloudflare, buka **Workers & Pages** → **Create application** → **Pages** → **Connect to Git**.
+3. Pilih repository GitHub project ini.
+4. Atur **Production branch** ke `main`.
+5. Pilih preset **Next.js (Static HTML Export)**. Jika pengaturan tidak terisi otomatis, gunakan build command `npx next build` dan build output directory `out`.
+6. Tambahkan build environment variable `NODE_VERSION` dengan nilai `22`, lalu simpan dan deploy.
+
+Setelah deployment pertama berhasil, setiap push ke branch `main` akan memicu deployment otomatis; pull request akan mendapat deployment preview.
+
+> Static export cocok untuk aplikasi TaskMate saat ini. Fitur yang memerlukan server Next.js, seperti API Routes dinamis, Server Actions, cookies, atau rendering saat request, tidak tersedia pada setup ini. Jika fitur server diperlukan nanti, gunakan Cloudflare Workers dengan jalur Next.js yang direkomendasikan Cloudflare.
+
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
 ## Learn More
